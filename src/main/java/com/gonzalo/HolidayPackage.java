@@ -11,6 +11,16 @@ public class HolidayPackage {
 	private Hotel lodging;
 	private double price;
 	
+	public HolidayPackage(Flight inbound, Flight outbound, Hotel lodging, double price) {
+		super();
+		this.inbound = inbound;
+		this.outbound = outbound;
+		this.lodging = lodging;
+		this.price = price;
+	}
+	
+	public String testString() {return Double.toString(price);}
+	
 	public Long getId() {
 		return id;
 	}
@@ -93,12 +103,6 @@ public class HolidayPackage {
 		return true;
 	}
 
-	public HolidayPackage(Flight inbound, Flight outbound, Hotel lodging, double price) {
-		super();
-		this.inbound = inbound;
-		this.outbound = outbound;
-		this.lodging = lodging;
-		this.price = price;
-	}
+	
 	
 }
