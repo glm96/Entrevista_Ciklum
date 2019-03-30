@@ -17,7 +17,7 @@ import com.googlecode.objectify.ObjectifyService;
     name = "HelloAppEngine",
     urlPatterns = {"/hello"}
 )
-public class HelloAppEngine extends HttpServlet {
+public class getService extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) 

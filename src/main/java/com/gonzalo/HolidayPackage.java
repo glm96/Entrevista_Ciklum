@@ -11,6 +11,8 @@ public class HolidayPackage {
 	private Hotel lodging;
 	private double price;
 	
+	public HolidayPackage() {}
+	
 	public HolidayPackage(Flight inbound, Flight outbound, Hotel lodging, double price) {
 		super();
 		this.inbound = inbound;
@@ -19,6 +21,14 @@ public class HolidayPackage {
 		this.price = price;
 	}
 	
+	
+	@Override
+	public String toString() {
+		return "HolidayPackage [id=" + id + ", inbound=" + inbound.toString() + ", outbound=" + outbound.toString() + ", lodging=" + lodging.toString()
+				+ ", price=" + price + "]";
+	}
+
+
 	public String testString() {return Double.toString(price);}
 	
 	public Long getId() {

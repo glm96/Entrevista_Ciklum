@@ -1,17 +1,19 @@
 package com.gonzalo;
 
-import com.googlecode.objectify.annotation.Entity;
-import com.googlecode.objectify.annotation.Id;
-
-@Entity
 public class Hotel {
-	@Id
-	private Long id;
 	private long code;
 	private String name;
 	private short starRating;
 	private GeoLocation geoLocation;
 	
+	public Hotel() {}
+	
+	@Override
+	public String toString() {
+		return "Hotel [code=" + code + ", name=" + name + ", starRating=" + starRating + ", geoLocation="
+				+ geoLocation + "]";
+	}
+
 	public Hotel(long code, String name, short starRating, GeoLocation geoLocation) {
 		super();
 		this.code = code;
@@ -56,15 +58,6 @@ public class Hotel {
 			return false;
 		return true;
 	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
 	public long getCode() {
 		return code;
 	}

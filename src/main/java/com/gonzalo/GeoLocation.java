@@ -20,6 +20,8 @@ public class GeoLocation
     /**
      * Constructs a geo location object with given latitude and longitude
      */
+    public GeoLocation() {}
+    
     public GeoLocation(double theLatitude, double theLongitude) 
     {
         latitude = theLatitude;

@@ -3,17 +3,19 @@ package com.gonzalo;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-import com.googlecode.objectify.annotation.Entity;
-import com.googlecode.objectify.annotation.Id;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-@Entity
 public class Flight {
 
-	@Id
-	private Long id;
 	private String fcode, departureCode, arrivalCode;
+	
+//	@JsonDeserialize(using = LocalDateDeserializer.class)
+//	@JsonSerialize(using = LocalDateSerializer.class)
 	private LocalDate arrivalDate, departureDate;
 	private LocalTime arrivalTime, departureTime;
+	
+	public Flight() {}
 	
 	public Flight(String fcode, String departureCode, String arrivalCode, LocalDate arrivalDate,
 			LocalDate departureDate, LocalTime arrivalTime, LocalTime departureTime) {
@@ -25,6 +27,14 @@ public class Flight {
 		this.departureDate = departureDate;
 		this.arrivalTime = arrivalTime;
 		this.departureTime = departureTime;
+	}
+
+	@Override
+	public String toString() {
+		//return "Flight [fcode=" + fcode + ", departureCode=" + departureCode + ", arrivalCode=" + arrivalCode + "]";
+		return "Flight [fcode=" + fcode + ", departureCode=" + departureCode + ", arrivalCode="
+				+ arrivalCode + ", arrivalDate=" + arrivalDate + ", departureDate=" + departureDate + ", arrivalTime="
+				+ arrivalTime + ", departureTime=" + departureTime + "]";
 	}
 
 	@Override
@@ -86,15 +96,6 @@ public class Flight {
 		} else if (!fcode.equals(other.fcode))
 			return false;
 		return true;
-	}
-
-	
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public String getFcode() {
