@@ -3,11 +3,8 @@ package com.gonzalo;
 import static com.googlecode.objectify.ObjectifyService.ofy;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Random;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -27,6 +24,7 @@ import com.googlecode.objectify.LoadException;
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.cmd.Query;
 
+@SuppressWarnings("serial")
 @WebServlet(
 	    name = "hpServlet",
 	    urlPatterns = {"/holidaypackages/*"}
@@ -95,17 +93,28 @@ public class HolidayPackages extends HttpServlet {
 	}
 	
 	try {
-		Query<HolidayPackage> ofyQuery;
-		if(finalfilter!=null) {
-			ofyQuery = ofy().load().type(HolidayPackage.class).order(sort).filter(finalfilter).limit(1000);
+		ObjectMapper mapper = new ObjectMapper();
+		String JSONstring;
+		if(id!=0) {
+			HolidayPackage hp = ofy().load().type(HolidayPackage.class).id(id).now();
+			JSONstring = mapper.writeValueAsString(hp);
 		}
 		else {
-			ofyQuery = ofy().load().type(HolidayPackage.class).order(sort).limit(1000);
+			List<HolidayPackage> list;
+			Query<HolidayPackage> ofyQuery;
+			if(finalfilter!=null) {
+				ofyQuery = ofy().load().type(HolidayPackage.class).order(sort).filter(finalfilter).limit(1000);
+			}
+			else {
+				ofyQuery = ofy().load().type(HolidayPackage.class).order(sort).limit(1000);
+			}
+			list = ofyQuery.list();
+			JSONstring = mapper.writeValueAsString(list);
+			
 		}
-		List<HolidayPackage> list = ofyQuery.list();
-		ObjectMapper mapper = new ObjectMapper();
 		
-		response.getWriter().println(mapper.writeValueAsString(list));
+		response.getWriter().println(JSONstring);
+		
 		
 	}	catch(DatastoreNeedIndexException e) {response.getWriter().println("Unsupported query, contact admin");} //Unindexed query
 		catch(LoadException e) {response.getWriter().println("Database is getting ready, please try again later");} //Index loading
@@ -159,12 +168,18 @@ public class HolidayPackages extends HttpServlet {
 		resp.setContentType("text/plain");
 		resp.setCharacterEncoding("UTF-8");
 		
-		//get id parameter
-		String s = req.getParameter("id");
-		if(s!= null) 
-			id = Long.parseLong(s);
+		//grab id from petition
+		String str = req.getRequestURI();
+		str = str.substring(str.lastIndexOf("/")+1);
+		if(str!=null) {
+			if(str.matches("^[0-9]*$"))
+				id = Long.parseLong(str);
+			else
+				id = new Long(0);
+		}
 		else
 			id = new Long(0);
+		
 		
 		try{
 			ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule()); 
@@ -186,58 +201,33 @@ public class HolidayPackages extends HttpServlet {
 	}
   	
   /**
-	 * Test method for generating random HolidayPackage instances
-	 * @return Semi-random instance of HolidayPackage
-	 */
-	private HolidayPackage createDummyHoliday () {
-		Flight ib, ob;
-		Hotel hotel;
-		double precio = 1.11;
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
-		HolidayPackage holiday = new HolidayPackage();
-		try {
-			Random rand = new Random();
-			int fecha = rand.nextInt(20)+1;
-			String s1 = Integer.toString(fecha), s2 = Integer.toString(fecha+1);
-			Date date1 = sdf.parse(s1+"/06/19 10:34:22");
-			Date date2 = sdf.parse(s2+"/06/19 10:34:22");
-			ib = new Flight("SU2529", "AGP", "SVO", date1, date2);
-			ob = ib;
-			hotel = new Hotel((long) 12305314, "Suimeikan", (short) rand.nextInt(5), new GeoLocation(Math.random()*100,Math.random()*100));
-			holiday = new HolidayPackage(ib,ob,hotel,precio);
-		}catch(Exception e) {e.printStackTrace();}
+   * Manages POST petitions on /create, inserting a new entity on the DB, provided a valid JSON is 
+   * passed via the petition body
+   */
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
-		return holiday;
-	}
-	
-	/**
-	   * Manages POST petitions on /create, inserting a new entity on the DB, provided a valid JSON is 
-	   * passed via the petition body
-	   */
-		@Override
-		protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-			
-			ObjectifyService.register(HolidayPackage.class); //Register HolidayPackages in order to be able to use them with Objectify library
-			HolidayPackage holiday;
-			
-			//Set response type as raw text
-			resp.setContentType("text/plain");
-			resp.setCharacterEncoding("UTF-8");
-			
-			//Create an object out of the petition and try to insert it on the database
-			try {
-			ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule()); 
-			holiday = mapper.readValue(req.getInputStream(), HolidayPackage.class);
-			
-			if(holiday.checkCorrect()) {
-				ofy().save().entity(holiday).now();
-				resp.getWriter().print("Done"); //Format was correct and the new entity is now on the database
-			}
-			else
-				resp.getWriter().print("WRONG FORMAT");	//Object contained some wrong attribute and will not be included on the database
-			}catch(JsonParseException e) {resp.getWriter().print("WRONG FORMAT");}  //Invalid or no JSON on body
-			
+		ObjectifyService.register(HolidayPackage.class); //Register HolidayPackages in order to be able to use them with Objectify library
+		HolidayPackage holiday;
+		
+		//Set response type as raw text
+		resp.setContentType("text/plain");
+		resp.setCharacterEncoding("UTF-8");
+		
+		//Create an object out of the petition and try to insert it on the database
+		try {
+		ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule()); 
+		holiday = mapper.readValue(req.getInputStream(), HolidayPackage.class);
+		
+		if(holiday.checkCorrect()) {
+			ofy().save().entity(holiday).now();
+			resp.getWriter().print("Done"); //Format was correct and the new entity is now on the database
 		}
+		else
+			resp.getWriter().print("WRONG FORMAT");	//Object contained some wrong attribute and will not be included on the database
+		}catch(JsonParseException e) {resp.getWriter().print("WRONG FORMAT");}  //Invalid or no JSON on body
+		
+	}	
 	
 	  /**
 	   * Gets sorting type argument for the query
