@@ -26,22 +26,33 @@ import com.googlecode.objectify.LoadException;
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.cmd.Query;
 
+/**
+ * Servlet for UPDATE operations via an UPDATE petition on /update, with a 
+ * HolidayPackage JSON on its body and an id on its URL.
+ * @author Gonzalo Luque
+ *
+ */
 @WebServlet(
     name = "updateServlet",
     urlPatterns = {"/update"}
 )
 public class UpdateService extends HttpServlet {
 
+	/**
+	 * Method for UPDATE petition management. Checks whether id stored exists within the database and, 
+	 * if so, update its entry
+	 */
   @Override
 	protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-	  	ObjectifyService.register(HolidayPackage.class);
+	  	ObjectifyService.register(HolidayPackage.class); //Register HolidayPackages in order to be able to use them with Objectify library
 		HolidayPackage holiday;
 		Long id;
-		
+		//sets response type to plain text
 		resp.setContentType("text/plain");
 		resp.setCharacterEncoding("UTF-8");
 		
+		//get id parameter
 		String s = req.getParameter("id");
 		if(s!= null) 
 			id = Long.parseLong(s);

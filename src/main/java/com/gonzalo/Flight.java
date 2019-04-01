@@ -1,14 +1,14 @@
 package com.gonzalo;
 
-import java.sql.Time;
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.Date;
-
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.googlecode.objectify.annotation.Index;
 
+/**
+ * This class contains all data of a flight, including flight code,
+ *  airport (arrival and departure) codes and date/time of arrival and departure
+ * @author Gonzalo Luque
+ *
+ */
 public class Flight {
 
 	private String fcode;
@@ -16,8 +16,19 @@ public class Flight {
 	private Date arrivalDate;
 	@Index private Date departureDate;
 
+	/**
+	 * Default constructor, used for Objectify and Jackson object management
+	 */
 	public Flight() {}
 	
+	/**
+	 * Constructor used for random test data generation.
+	 * @param fcode Flight code of the flight
+	 * @param departureCode Departure airport code
+	 * @param arrivalCode Arrival airport code
+	 * @param arrivalDate Arrival flight time
+	 * @param departureDate Departure flight time
+	 */
 	public Flight(String fcode, String departureCode, String arrivalCode, Date arrivalDate,
 			Date departureDate) {
 		super();
@@ -28,6 +39,10 @@ public class Flight {
 		this.departureDate = departureDate;
 	}
 
+	/**
+	 * Checks if every parameter on the entity is according to expected format
+	 * @return Returns true if it is a correct declaration
+	 */
 	public boolean checkCorrect() {
 		String fcoderegex = "^([A-Z]{2}|[A-Z]\\d|\\d[A-Z])[1-9](\\d{1,3})?$", IATAregex = "[A-Z]{3}";
 		if(!fcode.matches(fcoderegex))
@@ -42,13 +57,9 @@ public class Flight {
 		
 	}
 	
-	@Override
-	public String toString() {
-		//return "Flight [fcode=" + fcode + ", departureCode=" + departureCode + ", arrivalCode=" + arrivalCode + "]";
-		return "Flight [fcode=" + fcode + ", departureCode=" + departureCode + ", arrivalCode="
-				+ arrivalCode + ", arrivalDate=" + arrivalDate + ", departureDate=" + departureDate + "]";
-	}
-
+	/**
+	  * {@inheritDoc}
+	  */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -61,6 +72,9 @@ public class Flight {
 		return result;
 	}
 
+	/**
+	  * {@inheritDoc}
+	  */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -98,42 +112,82 @@ public class Flight {
 		return true;
 	}
 
+	/**
+	 * 
+	 * @return Flight code of this specific flight
+	 */
 	public String getFcode() {
 		return fcode;
 	}
 
+	/**
+	 * 
+	 * @param fcode Flight code to be set
+	 */
 	public void setFcode(String fcode) {
 		this.fcode = fcode;
 	}
 
+	/**
+	 * 
+	 * @return Departure airport's IATA code
+	 */
 	public String getDepartureCode() {
 		return departureCode;
 	}
 
+	/**
+	 * 
+	 * @param departureCode IATA code to be set for the departure airport
+	 */
 	public void setDepartureCode(String departureCode) {
 		this.departureCode = departureCode;
 	}
 
+	/**
+	 * 
+	 * @return Arrival airport's IATA code
+	 */
 	public String getArrivalCode() {
 		return arrivalCode;
 	}
 
+	/**
+	 * 
+	 * @param arrivalCode IATA code to be set for the arrival airport
+	 */
 	public void setArrivalCode(String arrivalCode) {
 		this.arrivalCode = arrivalCode;
 	}
 
+	/**
+	 * 
+	 * @return Date and time of arrival
+	 */
 	public Date getArrivalDate() {
 		return arrivalDate;
 	}
-
+	
+	/**
+	 * 
+	 * @param arrivalDate Date and time of arrival to be set
+	 */
 	public void setArrivalDate(Date arrivalDate) {
 		this.arrivalDate = arrivalDate;
 	}
 
+	/**
+	 * 
+	 * @return Date and time of departure
+	 */
 	public Date getDepartureDate() {
 		return departureDate;
 	}
 
+	/**
+	 * 
+	 * @param departureDate Date and time of arrival to be set
+	 */
 	public void setDepartureDate(Date departureDate) {
 		this.departureDate = departureDate;
 	}

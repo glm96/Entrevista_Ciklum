@@ -9,6 +9,12 @@ package com.gonzalo;
  * the University of Washington.
  */
 
+/**
+ * Class for storing 
+ * @author matthewalangreen
+ *
+ */
+
 public class GeoLocation 
 {
     // Earth radius in miles
@@ -38,6 +44,7 @@ public class GeoLocation
     
     /**
      * Returns the latitude of this geo location
+     * @return latitude latitude of the location
      */
     public double getLatitude() 
     {
@@ -46,6 +53,7 @@ public class GeoLocation
 
     /**
      * returns the longitude of this geo location
+     * @return longitude longitude of the location
      */
     public double getLongitude() 
     {
@@ -80,8 +88,11 @@ public class GeoLocation
 		return true;
 	}
 
-	// returns the distance in miles between this geo location and the given
-    // other geo location
+	/**
+	 * Returns the distance between two GeoLocation entities
+	 * @param other GeoLocation to compare with
+	 * @return distance in miles
+	 */
     public double distanceFrom(GeoLocation other) 
     {
         double lat1 = Math.toRadians(latitude);
