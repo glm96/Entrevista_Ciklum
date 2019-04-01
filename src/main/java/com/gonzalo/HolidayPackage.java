@@ -2,12 +2,14 @@ package com.gonzalo;
 
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
+import com.googlecode.objectify.annotation.Index;
 
 @Entity
 public class HolidayPackage {
 	@Id
 	private Long id;
-	private Flight inbound, outbound;
+	private Flight inbound;
+	private Flight outbound;
 	private Hotel lodging;
 	private double price;
 	
@@ -21,6 +23,18 @@ public class HolidayPackage {
 		this.price = price;
 	}
 	
+	public boolean checkCorrect() {
+		String regex = "\\d+(\\.\\d{1,2})?";
+		if(!inbound.checkCorrect())
+			return false;
+		if(!outbound.checkCorrect())
+			return false;
+		if(!lodging.checkCorrect())
+			return false;
+		if(!Double.toString(price).matches(regex))
+			return false;
+		return true;
+	}
 	
 	@Override
 	public String toString() {

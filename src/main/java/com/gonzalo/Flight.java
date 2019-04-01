@@ -1,40 +1,52 @@
 package com.gonzalo;
 
+import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Date;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.googlecode.objectify.annotation.Index;
 
 public class Flight {
 
-	private String fcode, departureCode, arrivalCode;
-	
-//	@JsonDeserialize(using = LocalDateDeserializer.class)
-//	@JsonSerialize(using = LocalDateSerializer.class)
-	private LocalDate arrivalDate, departureDate;
-	private LocalTime arrivalTime, departureTime;
-	
+	private String fcode;
+	@Index private String departureCode, arrivalCode;
+	private Date arrivalDate;
+	@Index private Date departureDate;
+
 	public Flight() {}
 	
-	public Flight(String fcode, String departureCode, String arrivalCode, LocalDate arrivalDate,
-			LocalDate departureDate, LocalTime arrivalTime, LocalTime departureTime) {
+	public Flight(String fcode, String departureCode, String arrivalCode, Date arrivalDate,
+			Date departureDate) {
 		super();
 		this.fcode = fcode;
 		this.departureCode = departureCode;
 		this.arrivalCode = arrivalCode;
 		this.arrivalDate = arrivalDate;
 		this.departureDate = departureDate;
-		this.arrivalTime = arrivalTime;
-		this.departureTime = departureTime;
 	}
 
+	public boolean checkCorrect() {
+		String fcoderegex = "^([A-Z]{2}|[A-Z]\\d|\\d[A-Z])[1-9](\\d{1,3})?$", IATAregex = "[A-Z]{3}";
+		if(!fcode.matches(fcoderegex))
+			return false;
+		if(!departureCode.matches(IATAregex))
+			return false;
+		if(!arrivalCode.matches(IATAregex))
+			return false;
+		/*if(arrivalDate.compareTo(departureDate)>=0)
+			return false;*/
+		return true;
+		
+	}
+	
 	@Override
 	public String toString() {
 		//return "Flight [fcode=" + fcode + ", departureCode=" + departureCode + ", arrivalCode=" + arrivalCode + "]";
 		return "Flight [fcode=" + fcode + ", departureCode=" + departureCode + ", arrivalCode="
-				+ arrivalCode + ", arrivalDate=" + arrivalDate + ", departureDate=" + departureDate + ", arrivalTime="
-				+ arrivalTime + ", departureTime=" + departureTime + "]";
+				+ arrivalCode + ", arrivalDate=" + arrivalDate + ", departureDate=" + departureDate + "]";
 	}
 
 	@Override
@@ -43,10 +55,8 @@ public class Flight {
 		int result = 1;
 		result = prime * result + ((arrivalCode == null) ? 0 : arrivalCode.hashCode());
 		result = prime * result + ((arrivalDate == null) ? 0 : arrivalDate.hashCode());
-		result = prime * result + ((arrivalTime == null) ? 0 : arrivalTime.hashCode());
 		result = prime * result + ((departureCode == null) ? 0 : departureCode.hashCode());
 		result = prime * result + ((departureDate == null) ? 0 : departureDate.hashCode());
-		result = prime * result + ((departureTime == null) ? 0 : departureTime.hashCode());
 		result = prime * result + ((fcode == null) ? 0 : fcode.hashCode());
 		return result;
 	}
@@ -70,11 +80,6 @@ public class Flight {
 				return false;
 		} else if (!arrivalDate.equals(other.arrivalDate))
 			return false;
-		if (arrivalTime == null) {
-			if (other.arrivalTime != null)
-				return false;
-		} else if (!arrivalTime.equals(other.arrivalTime))
-			return false;
 		if (departureCode == null) {
 			if (other.departureCode != null)
 				return false;
@@ -84,11 +89,6 @@ public class Flight {
 			if (other.departureDate != null)
 				return false;
 		} else if (!departureDate.equals(other.departureDate))
-			return false;
-		if (departureTime == null) {
-			if (other.departureTime != null)
-				return false;
-		} else if (!departureTime.equals(other.departureTime))
 			return false;
 		if (fcode == null) {
 			if (other.fcode != null)
@@ -122,37 +122,20 @@ public class Flight {
 		this.arrivalCode = arrivalCode;
 	}
 
-	public LocalDate getArrivalDate() {
+	public Date getArrivalDate() {
 		return arrivalDate;
 	}
 
-	public void setArrivalDate(LocalDate arrivalDate) {
+	public void setArrivalDate(Date arrivalDate) {
 		this.arrivalDate = arrivalDate;
 	}
 
-	public LocalDate getDepartureDate() {
+	public Date getDepartureDate() {
 		return departureDate;
 	}
 
-	public void setDepartureDate(LocalDate departureDate) {
+	public void setDepartureDate(Date departureDate) {
 		this.departureDate = departureDate;
 	}
-
-	public LocalTime getArrivalTime() {
-		return arrivalTime;
-	}
-
-	public void setArrivalTime(LocalTime arrivalTime) {
-		this.arrivalTime = arrivalTime;
-	}
-
-	public LocalTime getDepartureTime() {
-		return departureTime;
-	}
-
-	public void setDepartureTime(LocalTime departureTime) {
-		this.departureTime = departureTime;
-	}
-	
 	
 }

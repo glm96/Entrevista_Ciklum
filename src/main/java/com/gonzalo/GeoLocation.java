@@ -28,6 +28,14 @@ public class GeoLocation
         longitude = theLongitude;
     }
 
+    public boolean checkCorrect() {
+    	if(this.latitude>90 || this.latitude < -90)
+    		return false;
+    	if(this.longitude>180 || this.longitude<-180)
+    		return false;
+    	return true;
+    }
+    
     /**
      * Returns the latitude of this geo location
      */

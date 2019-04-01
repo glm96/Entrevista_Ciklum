@@ -1,9 +1,11 @@
 package com.gonzalo;
 
+import com.googlecode.objectify.annotation.Index;
+
 public class Hotel {
 	private long code;
 	private String name;
-	private short starRating;
+	@Index private short starRating;
 	private GeoLocation geoLocation;
 	
 	public Hotel() {}
@@ -22,6 +24,14 @@ public class Hotel {
 		this.geoLocation = geoLocation;
 	}
 
+	public boolean checkCorrect() {
+		if(this.starRating<0 || this.starRating>5)
+			return false;
+		if(!geoLocation.checkCorrect())
+			return false;
+		return true;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
