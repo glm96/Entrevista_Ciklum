@@ -21,7 +21,7 @@ import com.googlecode.objectify.ObjectifyService;
  */
 @WebServlet(
     name = "deleteServlet",
-    urlPatterns = {"/delete"}
+    urlPatterns = {"/delete/*"}
 )
 public class DeleteService extends HttpServlet {
 
@@ -50,7 +50,8 @@ public class DeleteService extends HttpServlet {
 		if(success) {
 			msg = "Done";
 		}
-		resp.getWriter().print(msg);
+		resp.getWriter().println(msg);
+		resp.getWriter().println(req.getRequestURI());
 		
 	}
 }

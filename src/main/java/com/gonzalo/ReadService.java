@@ -55,7 +55,7 @@ public class ReadService extends HttpServlet {
 	//set response type as json
 	response.setContentType("application/json");
 	response.setCharacterEncoding("UTF-8");	
-	
+
 	//Get parameters out of the request and store them
 	String sort = getSorting(request);
 	String IATAarr = getIATAarrival(request);
@@ -100,8 +100,7 @@ public class ReadService extends HttpServlet {
 		List<HolidayPackage> list = ofyQuery.list();
 		ObjectMapper mapper = new ObjectMapper();
 		
-		for(HolidayPackage hp : list)
-				response.getWriter().println(mapper.writeValueAsString(hp));		
+		response.getWriter().println(mapper.writeValueAsString(list));
 		
 	}	catch(DatastoreNeedIndexException e) {response.getWriter().println("Unsupported query, contact admin");} //Unindexed query
 		catch(LoadException e) {response.getWriter().println("Database is getting ready, please try again later");} //Index loading
