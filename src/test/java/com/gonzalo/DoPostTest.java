@@ -5,7 +5,6 @@ import static org.junit.Assert.*;
 import java.io.IOException;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -18,7 +17,6 @@ import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.util.Closeable;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gonzalo.CorrectPackageVerifierTest;
 
 /**
  * Test for POST requests. Sends out a POST request and checks if it was correctly POSTed sending out a GET request
@@ -66,7 +64,6 @@ public class DoPostTest {
 		    Assert.assertEquals("application/json", response.getContentType());
 		    Assert.assertEquals("UTF-8", response.getCharacterEncoding());
 		    String str = response.getWriterContent().toString();
-		    System.out.println(str);
 		    HolidayPackage hp2 = mapper.readValue(str, HolidayPackage.class);
 		    Assert.assertTrue(hp2.equals(hp));
 		    
