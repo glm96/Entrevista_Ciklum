@@ -1,36 +1,133 @@
-<?xml version="1.0" encoding="utf-8"?>
-<datastore-indexes
-  autoGenerate="true">
-    <datastore-index kind="HolidayPackage" ancestor="false">
-        <property name="outbound.departureCode" direction="asc" />
-        <property name="outbound.arrivalCode" direction="asc" />
+<!-- Indices written at Tue, 2 Apr 2019 14:40:23 CEST -->
+
+<datastore-indexes autoGenerate="true">
+
+    <!-- Used 4 times in query history -->
+    <datastore-index kind="HolidayPackage" ancestor="false" source="auto">
+        <property name="outbound.arrivalCode" direction="asc"/>
+        <property name="outbound.departureDate" direction="desc"/>
+    </datastore-index>
+
+    <!-- Used 2 times in query history -->
+    <datastore-index kind="HolidayPackage" ancestor="false" source="auto">
+        <property name="outbound.arrivalCode" direction="asc"/>
         <property name="outbound.departureDate" direction="asc"/>
     </datastore-index>
-    <datastore-index kind="HolidayPackage" ancestor="false">
-        <property name="outbound.departureCode" direction="asc" />
-        <property name="outbound.arrivalCode" direction="asc" />
+
+    <!-- Used 4 times in query history -->
+    <datastore-index kind="HolidayPackage" ancestor="false" source="auto">
+        <property name="outbound.arrivalCode" direction="asc"/>
+        <property name="lodging.starRating" direction="asc"/>
+        <property name="outbound.departureDate" direction="asc"/>
+    </datastore-index>
+
+    <!-- Used 4 times in query history -->
+    <datastore-index kind="HolidayPackage" ancestor="false" source="auto">
+        <property name="outbound.arrivalCode" direction="asc"/>
+        <property name="lodging.starRating" direction="desc"/>
+        <property name="outbound.departureDate" direction="asc"/>
+    </datastore-index>
+
+    <!-- Used 2 times in query history -->
+    <datastore-index kind="HolidayPackage" ancestor="false" source="auto">
+        <property name="outbound.departureCode" direction="asc"/>
+        <property name="outbound.departureDate" direction="desc"/>
+    </datastore-index>
+
+    <!-- Used 2 times in query history -->
+    <datastore-index kind="HolidayPackage" ancestor="false" source="auto">
+        <property name="outbound.departureCode" direction="asc"/>
+        <property name="lodging.starRating" direction="desc"/>
+        <property name="outbound.departureDate" direction="asc"/>
+    </datastore-index>
+
+    <!-- Used 2 times in query history -->
+    <datastore-index kind="HolidayPackage" ancestor="false" source="auto">
+        <property name="outbound.departureCode" direction="asc"/>
+        <property name="lodging.starRating" direction="asc"/>
+        <property name="outbound.departureDate" direction="asc"/>
+    </datastore-index>
+
+    <!-- Used 2 times in query history -->
+    <datastore-index kind="HolidayPackage" ancestor="false" source="auto">
+        <property name="outbound.departureCode" direction="asc"/>
+        <property name="outbound.departureDate" direction="asc"/>
+    </datastore-index>
+
+    <!-- Used 2 times in query history -->
+    <datastore-index kind="HolidayPackage" ancestor="false" source="auto">
+        <property name="lodging.starRating" direction="desc"/>
+        <property name="outbound.departureDate" direction="asc"/>
+    </datastore-index>
+
+    <!-- Used 2 times in query history -->
+    <datastore-index kind="HolidayPackage" ancestor="false" source="auto">
+        <property name="lodging.starRating" direction="asc"/>
+        <property name="outbound.departureDate" direction="asc"/>
+    </datastore-index>
+
+    <!-- Used 2 times in query history -->
+    <datastore-index kind="HolidayPackage" ancestor="false" source="auto">
+        <property name="lodging.starRating" direction="desc"/>
+        <property name="outbound.departureDate" direction="desc"/>
+    </datastore-index>
+
+    <!-- Used 4 times in query history -->
+    <datastore-index kind="HolidayPackage" ancestor="false" source="auto">
+        <property name="outbound.arrivalCode" direction="asc"/>
+        <property name="outbound.departureCode" direction="asc"/>
+        <property name="outbound.departureDate" direction="desc"/>
+    </datastore-index>
+
+    <!-- Used 2 times in query history -->
+    <datastore-index kind="HolidayPackage" ancestor="false" source="auto">
+        <property name="outbound.arrivalCode" direction="asc"/>
+        <property name="outbound.departureCode" direction="asc"/>
+        <property name="outbound.departureDate" direction="asc"/>
+    </datastore-index>
+
+    <!-- Used 4 times in query history -->
+    <datastore-index kind="HolidayPackage" ancestor="false" source="auto">
+        <property name="outbound.arrivalCode" direction="asc"/>
+        <property name="outbound.departureCode" direction="asc"/>
+        <property name="lodging.starRating" direction="asc"/>
+        <property name="outbound.departureDate" direction="asc"/>
+    </datastore-index>
+
+    <!-- Used 4 times in query history -->
+    <datastore-index kind="HolidayPackage" ancestor="false" source="auto">
+        <property name="outbound.arrivalCode" direction="asc"/>
+        <property name="outbound.departureCode" direction="asc"/>
+        <property name="lodging.starRating" direction="desc"/>
+        <property name="outbound.departureDate" direction="asc"/>
+    </datastore-index>
+
+    <!-- Used 2 times in query history -->
+    <datastore-index kind="HolidayPackage" ancestor="false" source="auto">
+        <property name="outbound.arrivalCode" direction="asc"/>
+        <property name="outbound.departureCode" direction="asc"/>
+        <property name="lodging.starRating" direction="desc"/>
+        <property name="outbound.departureDate" direction="desc"/>
+    </datastore-index>
+
+    <!-- Used 2 times in query history -->
+    <datastore-index kind="HolidayPackage" ancestor="false" source="auto">
+        <property name="outbound.arrivalCode" direction="asc"/>
+        <property name="outbound.departureCode" direction="asc"/>
         <property name="lodging.starRating" direction="desc"/>
     </datastore-index>
-	<datastore-index kind="HolidayPackage" ancestor="false" source="manual">
-		<property name="outbound.arrivalCode" direction="asc"/>
-		<property name="lodging.starRating" direction="desc"/>
-	</datastore-index>
-	<datastore-index kind="HolidayPackage" ancestor="false" source="manual">
-		<property name="outbound.arrivalCode" direction="asc"/>
-		<property name="lodging.starRating" direction="desc"/>
-		<property name="outbound.departureDate" direction="asc"/>
-	</datastore-index>
-	
-	<datastore-index kind="HolidayPackage" ancestor="false" source="manual"> <property name="outbound.arrivalCode" direction="asc"/> <property name="outbound.departureCode" direction="asc"/> <property name="outbound.departureDate" direction="desc"/> </datastore-index>
-	<datastore-index kind="HolidayPackage" ancestor="false" source="manual"> <property name="outbound.arrivalCode" direction="asc"/> <property name="outbound.departureCode" direction="asc"/> <property name="outbound.departureDate" direction="desc"/> </datastore-index>
-	<datastore-index kind="HolidayPackage" ancestor="false" source="manual"> <property name="outbound.arrivalCode" direction="asc"/> <property name="outbound.departureCode" direction="asc"/> <property name="lodging.starRating" direction="asc"/> </datastore-index>
-	<datastore-index kind="HolidayPackage" ancestor="false" source="manual"> <property name="outbound.arrivalCode" direction="asc"/> <property name="outbound.departureDate" direction="desc"/> </datastore-index>
-	<datastore-index kind="HolidayPackage" ancestor="false" source="manual"> <property name="outbound.arrivalCode" direction="asc"/> <property name="outbound.departureDate" direction="asc"/> </datastore-index>
-	<datastore-index kind="HolidayPackage" ancestor="false" source="manual"> <property name="outbound.departureCode" direction="asc"/> <property name="outbound.departureDate" direction="desc"/> </datastore-index>
-	<datastore-index kind="HolidayPackage" ancestor="false" source="manual"> <property name="outbound.departureCode" direction="asc"/> <property name="outbound.departureDate" direction="asc"/> </datastore-index>
-	<datastore-index kind="HolidayPackage" ancestor="false" source="manual"> <property name="v.departureCode" direction="asc"/> <property name="lodging.starRating" direction="asc"/> </datastore-index>
-	<datastore-index kind="HolidayPackage" ancestor="false" source="manual"> <property name="lodging.starRating" direction="asc"/> <property name="outbound.departureDate" direction="desc"/> </datastore-index>
-	<datastore-index kind="HolidayPackage" ancestor="false" source="manual"> <property name="lodging.starRating" direction="asc"/> <property name="outbound.departureDate" direction="asc"/> </datastore-index>
-	<datastore-index kind="HolidayPackage" ancestor="false" source="manual"> <property name="outbound.arrivalCode" direction="asc"/> <property name="lodging.starRating" direction="asc"/> <property name="outbound.departureDate" direction="desc"/> </datastore-index>
-	
+
+    <!-- Used 2 times in query history -->
+    <datastore-index kind="HolidayPackage" ancestor="false" source="auto">
+        <property name="outbound.arrivalCode" direction="asc"/>
+        <property name="lodging.starRating" direction="desc"/>
+        <property name="outbound.departureDate" direction="desc"/>
+    </datastore-index>
+
+    <!-- Used 1 time in query history -->
+    <datastore-index kind="HolidayPackage" ancestor="false" source="auto">
+        <property name="outbound.arrivalCode" direction="asc"/>
+        <property name="lodging.starRating" direction="desc"/>
+    </datastore-index>
+
 </datastore-indexes>

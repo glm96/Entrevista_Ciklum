@@ -51,8 +51,8 @@ public class Flight {
 			return false;
 		if(!arrivalCode.matches(IATAregex))
 			return false;
-		/*if(arrivalDate.compareTo(departureDate)>=0)
-			return false;*/
+		if(arrivalDate.compareTo(departureDate)<0)
+			return false;
 		return true;
 		
 	}

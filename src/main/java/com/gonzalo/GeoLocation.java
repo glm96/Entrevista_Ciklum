@@ -10,7 +10,7 @@ package com.gonzalo;
  */
 
 /**
- * Class for storing 
+ * Class for storing latitude and longitude of a location and do simple operations with them
  * @author matthewalangreen
  *
  */

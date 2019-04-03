@@ -3,6 +3,7 @@ package com.gonzalo;
 import static com.googlecode.objectify.ObjectifyService.ofy;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,12 +25,17 @@ import com.googlecode.objectify.LoadException;
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.cmd.Query;
 
+/**
+ * This class holds every response to petitions for HolidayPackages, implementing basic CRUD methods
+ * @author Gonzalo Luque
+ *
+ */
 @SuppressWarnings("serial")
 @WebServlet(
 	    name = "hpServlet",
 	    urlPatterns = {"/holidaypackages/*"}
-	)
-public class HolidayPackages extends HttpServlet {
+	    )
+public class HolidayPackagesServlet extends HttpServlet {
 
 	/**
 	 * Method for GET petition management. Gets parameters sort, IATAarr, IATAdep and rating parameters 
@@ -38,7 +44,6 @@ public class HolidayPackages extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) 
       throws IOException {
-	
 	ObjectifyService.register(HolidayPackage.class);//Register HolidayPackages in order to be able to use them with Objectify library
 	//set response type as json
 	response.setContentType("application/json");
@@ -46,7 +51,8 @@ public class HolidayPackages extends HttpServlet {
 	
 	
 	//Get parameters out of the request and store them
-	String sort = getSorting(request);
+	String sort1 = getSorting(request,1);
+	String sort2 = getSorting(request,2);
 	String IATAarr = getIATAarrival(request);
 	String IATAdep = getIATAorigin(request);
 	int rating = getStarRating(request);
@@ -77,8 +83,14 @@ public class HolidayPackages extends HttpServlet {
 			filterlist.add(f1);
 		}
 		if(rating != -1) {	//rating argument was found
-			Filter f1 = new FilterPredicate("lodging.starRating", FilterOperator.EQUAL,rating);
+			Filter f1 = new FilterPredicate("lodging.starRating", FilterOperator.GREATER_THAN_OR_EQUAL,rating);
 			filterlist.add(f1);
+			if(sort1.substring(0,sort1.lastIndexOf(".")).equals("lodging")) { //if filter is an inequality type, first sorting should be by that type
+				String aux;
+				aux = sort1;
+				sort1 = sort2;
+				sort2 = aux;
+			}
 		}
 		
 		for(Filter filter : filterlist) { //Create a single filter out of everything stored in finalfilter
@@ -93,9 +105,11 @@ public class HolidayPackages extends HttpServlet {
 	}
 	
 	try {
+		
 		ObjectMapper mapper = new ObjectMapper();
 		String JSONstring;
-		if(id!=0) {
+		
+		if(id!=0) { //There was an ID specified
 			HolidayPackage hp = ofy().load().type(HolidayPackage.class).id(id).now();
 			JSONstring = mapper.writeValueAsString(hp);
 		}
@@ -103,24 +117,26 @@ public class HolidayPackages extends HttpServlet {
 			List<HolidayPackage> list;
 			Query<HolidayPackage> ofyQuery;
 			if(finalfilter!=null) {
-				ofyQuery = ofy().load().type(HolidayPackage.class).order(sort).filter(finalfilter).limit(1000);
+				ofyQuery = ofy().load().type(HolidayPackage.class).filter(finalfilter).order(sort1).order(sort2).limit(1000);
 			}
 			else {
-				ofyQuery = ofy().load().type(HolidayPackage.class).order(sort).limit(1000);
+				ofyQuery = ofy().load().type(HolidayPackage.class).order(sort1).order(sort2).limit(1000);
 			}
 			list = ofyQuery.list();
 			JSONstring = mapper.writeValueAsString(list);
-			
 		}
 		
 		response.getWriter().println(JSONstring);
 		
 		
-	}	catch(DatastoreNeedIndexException e) {response.getWriter().println("Unsupported query, contact admin");} //Unindexed query
-		catch(LoadException e) {response.getWriter().println("Database is getting ready, please try again later");} //Index loading
-		catch(IllegalArgumentException e) {response.getWriter().println("Datastore error");} //Empty datastore throws IllegalArgumentException
+	}	catch(DatastoreNeedIndexException e) {response.getWriter().println("{\"error\": \"Unsupported "
+			+ "query, please contact an administrator\"}");} //Unindexed query
+		catch(LoadException e) {response.getWriter().println("{\"error\": \"Database "
+				+ "is not ready yet, please try again in a few minutes\"}");} //Index loading
+		catch(IllegalArgumentException e) {response.getWriter().println("{\"error\": \"Database error\"}");} //Empty datastore throws IllegalArgumentException
 		catch (IOException e) {e.printStackTrace();} //Error while parsing JSON
-
+		
+		
   }
   
   	/**
@@ -156,7 +172,7 @@ public class HolidayPackages extends HttpServlet {
   
   	/**
 	 * Method for UPDATE petition management. Checks whether id stored exists within the database and, 
-	 * if so, update its entry
+	 * if so, updates its entry
 	 */
   @Override
 	protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -232,11 +248,12 @@ public class HolidayPackages extends HttpServlet {
 	  /**
 	   * Gets sorting type argument for the query
 	   * @param req petition request
+	   * @param i sorting argument wanted
 	   * @return String containing the sorting type of the query
 	   */
-	private String getSorting(HttpServletRequest req) {
-		String p = req.getParameter("sort");
-		String res = "-outbound.departureDate";
+	private String getSorting(HttpServletRequest req, int i) {
+		String p = req.getParameter("sort"+Integer.toString(i));
+		String res = (i==1) ? "-lodging.starRating":"outbound.departureDate";
 		if(p!=null) {
 			switch(p) {
 			case "asctime":
