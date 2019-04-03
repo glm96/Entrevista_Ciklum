@@ -23,4 +23,32 @@ GET calls have application/JSON responses, while other calls have text/plain res
 
 Documentation can be found on /doc/ with javadoc formatting.
 
+JSON body format should be like this:
+{
+        "id": 5750085036015616,
+        "inbound": {
+            "fcode": "SU2529",
+            "departureCode": "AGP",
+            "arrivalCode": "SVO",
+            "arrivalDate": 1559471662000,
+            "departureDate": 1559385262000
+        },
+        "outbound": {
+            "fcode": "SU2529",
+            "departureCode": "AGP",
+            "arrivalCode": "SVO",
+            "arrivalDate": 1559471662000,
+            "departureDate": 1559385262000
+        },
+        "lodging": {
+            "code": 12305314,
+            "name": "Suimeikan",
+            "starRating": 4,
+            "geoLocation": {
+                "latitude": 6.3250294931248785,
+                "longitude": 9.282011421746361
+            }
+        },
+        "price": 1.11
+    }
 
